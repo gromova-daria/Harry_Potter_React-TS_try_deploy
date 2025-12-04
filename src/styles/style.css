@@ -44,7 +44,7 @@ html, body {
 
 }
 
-.logo {}
+
 
 .container {
     max-width: 1260px;
@@ -154,20 +154,28 @@ html, body {
     line-height: 160%;
     white-space: nowrap;
     transition: all .3s;
+    color: black;
 
 }
 
+
+
+
 /*Важно поставить визитид раньше, чтобы наведение срабатывало*/
 
-.header__nav-link:visited {
-    color: #2e242d;
 
+.header__nav-link:visited {
+    color: #b9ad59;
 }
 
 .header__nav-link:hover {
     color: #d99e13;
 }
 
+.header__nav-link.active {
+    color: #d99e13;
+    font-weight: 700;
+}
 
 
 .header__btn-box {
@@ -228,19 +236,6 @@ html, body {
     animation: fall 1s linear forwards;
 }
 
-@keyframes fall {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(600px) scale(0.5);
-        opacity: 0;
-    }
-
-    /*scale - масштабирование*/
-}
 
 .header__main {
     display: flex;
@@ -682,7 +677,7 @@ html, body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    display: none;
+
 
 }
 
@@ -694,7 +689,7 @@ html, body {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
-    display: none;
+
 }
 
 
@@ -702,6 +697,8 @@ html, body {
     margin: 36px 150px;
     display: none;
 }
+
+
 
 
 

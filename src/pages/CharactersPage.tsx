@@ -1,53 +1,65 @@
-import React from 'react';
-import CharacterCard from '../components/Character/CharacterCard';
-import CharacterModal from '../components/Character/CharacterModal';
-import { useCharacters } from '../hooks/useCharacters';
-import type { Character } from '../types/HPCharacter';
+import { useEffect, useState } from "react";
+import CharacterCard from "../components/Character/CharacterCard";
+import CharacterModal from "../components/Character/CharacterModal";
+import Header from '../components/Header/Header';
+import type { Character } from "../types/HPCharacter";
 
-export const CharactersPage: React.FC = () => {
-  const { characters, loading, error, loadMore, openModal, closeModal, modalCharacter, modalPhoto, hasMore } = useCharacters();
+const CharactersPage = () => {
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [modalCharacter, setModalCharacter] = useState<Character | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const charactersPerPage = 12;
 
-  // Функция для получения CSS-класса по дому
-  const getHouseClass = (house?: string) => {
-    const houseMap: Record<string, string> = {
-      Gryffindor: "gryffindor",
-      Slytherin: "slytherin",
-      Hufflepuff: "hufflepuff",
-      Ravenclaw: "ravenclaw",
-    };
-    return house ? houseMap[house] || "" : "";
+  const fetchCharacters = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("https://hp-api.onrender.com/api/characters");
+      if (!res.ok) throw new Error("Failed to fetch characters");
+      const data: Character[] = await res.json();
+      setCharacters(data);
+      setCurrentIndex(charactersPerPage);
+    } catch (e: unknown) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return (
+  useEffect(() => {
+    fetchCharacters();
+  }, []);
+
+  const loadMore = () => {
+    setCurrentIndex(prev => prev + charactersPerPage);
+  };
+
+return (
+  <>
+    <Header />  
     <div className="character__body">
-      {loading && <div id="loading">loading...</div>}
+      <h2 id="section1__title">The main characters</h2>
+      {loading && <div id="loading">Loading...</div>}
       {error && <div id="error">{error}</div>}
 
-      <section className="section1">
-        <h2 id="section1__title">The main characters</h2>
-        <div className="character_grid" id="characters-container">
-          {characters.map((char: Character) => (
-            <CharacterCard
-              key={char.name}
-              character={char}           // Обязательно character, а не data
-              onClick={() => openModal(char)}
-              getHouseClass={getHouseClass} // Передаём функцию
-            />
-          ))}
+      <div className="character_grid">
+        {characters.slice(0, currentIndex).map(char => (
+          <CharacterCard key={char.name} character={char} onClick={setModalCharacter} />
+        ))}
+      </div>
+
+      {currentIndex < characters.length && (
+        <div style={{ textAlign: "center", marginTop: 40 }}>
+          <button className="load-more-button" onClick={loadMore}>Load More Characters</button>
         </div>
+      )}
 
-        {hasMore && (
-          <div id="load-more-container" style={{ textAlign: 'center', marginTop: 40 }}>
-            <button id="load-more-btn" className="load-more-button" onClick={loadMore}>
-              Load More Characters
-            </button>
-          </div>
-        )}
-      </section>
-
-      <CharacterModal character={modalCharacter} photo={modalPhoto} onClose={closeModal} />
+      <CharacterModal character={modalCharacter} onClose={() => setModalCharacter(null)} />
     </div>
-  );
-};
+  </>
+);
+}
 
 export default CharactersPage;

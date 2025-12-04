@@ -7,11 +7,20 @@ export const HPapi = {
     try {
       const response = await fetch(`${this.url}/characters`);
       if (!response.ok) throw new Error('Не удалось загрузить данные');
-      const data = await response.json();
-      return data;
-    } catch (err) {
-      console.error('Ошибка загрузки персонажей:', err);
+      const characters = await response.json();
+      return characters;
+    } catch (error) {
+      console.error('Ошибка загрузки персонажей:', error);
       return [];
+    }
+  },
+
+  async getCharacterByName(name: string): Promise<Character | null> {
+    try {
+      const all = await this.getAllCharct();
+      return all.find(c => c.name.toLowerCase() === name.toLowerCase()) || null;
+    } catch {
+      return null;
     }
   }
 };

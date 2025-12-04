@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { HPapi } from '../api/hpApi';
-import { hpPhotoAPI } from "../api/photoApi";
+import { hpPhotoAPI } from '../api/photoApi';
+import type { Character } from '../types/HPCharacter';
 
 export const useCharacters = () => {
-  const [characters, setCharacters] = useState<HPCharacter[]>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
   const [visible, setVisible] = useState(12);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [modalCharacter, setModalCharacter] = useState<HPCharacter | null>(null);
+  const [modalCharacter, setModalCharacter] = useState<Character | null>(null);
   const [modalPhoto, setModalPhoto] = useState<string | null>(null);
 
   useEffect(() => {
-    async function load() {
+    const load = async () => {
       try {
         setLoading(true);
         const data = await HPapi.getAllCharct();
@@ -21,15 +22,17 @@ export const useCharacters = () => {
       } finally {
         setLoading(false);
       }
-    }
+    };
     load();
   }, []);
 
   const loadMore = () => setVisible(v => v + 12);
 
-  const openModal = async (char: HPCharacter) => {
+  const openModal = async (char: Character) => {
     setModalCharacter(char);
-    const photo = await hpPhotoAPI.getCharacterPhoto(char.name);
+    const photo = (await hpPhotoAPI.getCharacterPhoto(char.name)) 
+                  || (char.actor ? await hpPhotoAPI.getActorPhoto(char.actor) : null)
+                  || hpPhotoAPI.createGreyCircle(char.name);
     setModalPhoto(photo);
   };
 
