@@ -1,5 +1,6 @@
 import friendsImg from '../assets/images/friends.svg';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer'; 
 
 const HomePage = () => {
     return (
@@ -52,8 +53,10 @@ const HomePage = () => {
                     </div>
                 </div>
             </header>
+            <Footer />
         </div>
     );
 };
+
 
 export default HomePage;
