@@ -1,6 +1,7 @@
 import React from "react";
 import { mediaAPI } from '../../api/mediaApi';
 import type { Media, Book, Movie } from '../../types/HPFilmography';
+import cross from '../../assets/images/akar-icons_cross.svg';
 
 
 interface FilmographyModalProps {
@@ -51,7 +52,7 @@ const FilmographyModal: React.FC<FilmographyModalProps> = ({ media, onClose }) =
             <section className={`modal_window ${isBook ? 'book-modal' : 'movie-modal'}`}>
                 <div className="window_gen-nav">
                     <img
-                        src="/images/akar-icons_cross.svg"
+                        src={cross}
                         alt="Close"
                         className="cross"
                         onClick={onClose}

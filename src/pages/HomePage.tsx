@@ -18,7 +18,7 @@ const HomePage = () => {
                                         <a className="header__content-btn button button-empty" href="/characters">
                                             Characters
                                         </a>
-                                        <a className="header__content-btn button" href="#">
+                                        <a className="header__content-btn button" href="/filmography">
                                             Filmography
                                         </a>
                                     </div>
