@@ -15,6 +15,18 @@ const Header: React.FC = () => {
 
     const isActive = (path: string) => location.pathname === path;
 
+    // Функция для скролла к футеру (только для About us)
+    const scrollToFooter = () => {
+        const footerElement = document.getElementById('contacts');
+        if (footerElement) {
+            footerElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        closeMenu(); // Закрываем меню после клика
+    };
+
     return (
         <header className="header header-main">
             <a href="#" className="burger" onClick={toggle}><span /></a>
@@ -44,9 +56,18 @@ const Header: React.FC = () => {
                                     </Link>
                                 </li>
                                 <li className="header__nav-item">
-                                    <Link className={`header__nav-link ${isActive('/about') ? 'active' : ''}`} to="/about" onClick={closeMenu}>
+                                    
+                                    <a
+                                        className="header__nav-link active" // Добавили active
+                                        href="#contacts"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            scrollToFooter();
+                                        }}
+                                    >
                                         About us
-                                    </Link>
+                                    </a>
+                                    
                                 </li>
                             </ul>
                         </nav>
