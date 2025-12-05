@@ -1,5 +1,6 @@
 import Header from "../components/Header/Header";
 import HousesGrid from "../components/Houses/HousesGrid";
+import Footer from '../components/Footer/Footer'; 
 
 const HousesPage = () => {
     return (
@@ -16,6 +17,7 @@ const HousesPage = () => {
                     </div>
                 </section>
             </div>
+            <Footer />
         </div>
     );
 };
