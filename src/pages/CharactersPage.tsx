@@ -3,6 +3,7 @@ import CharacterCard from "../components/Character/CharacterCard";
 import CharacterModal from "../components/Character/CharacterModal";
 import Header from '../components/Header/Header';
 import type { Character } from "../types/HPCharacter";
+import Footer from '../components/Footer/Footer'; 
 
 const CharactersPage = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -58,8 +59,10 @@ return (
 
       <CharacterModal character={modalCharacter} onClose={() => setModalCharacter(null)} />
     </div>
+    <Footer />
   </>
 );
 }
 
 export default CharactersPage;
+
